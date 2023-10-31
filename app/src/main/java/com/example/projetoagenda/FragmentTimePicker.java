@@ -12,6 +12,8 @@ import androidx.fragment.app.DialogFragment;
 import java.util.Calendar;
 
 public class FragmentTimePicker extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
+    private int selectedHour;
+    private int selectedMinute;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -26,8 +28,14 @@ public class FragmentTimePicker extends DialogFragment implements TimePickerDial
     }
 
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        // Do something with the time chosen by the user
-        Log.d("DataHora", "Hora: "+String.valueOf(hourOfDay));
-        Log.d("DataHora", "Minuto: "+String.valueOf(minute));
+        selectedHour = hourOfDay;
+        selectedMinute = minute;
+
+        Log.d("DataHora", "Hora: " + String.valueOf(hourOfDay));
+        Log.d("DataHora", "Minuto: " + String.valueOf(minute));
+    }
+
+    public String getSelectedTime() {
+        return String.format("%02d:%02d", selectedHour, selectedMinute);
     }
 }
