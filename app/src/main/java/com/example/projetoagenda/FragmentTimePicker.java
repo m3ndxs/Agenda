@@ -17,12 +17,11 @@ public class FragmentTimePicker extends DialogFragment implements TimePickerDial
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // Use the current time as the default values for the picker
+
         final Calendar c = Calendar.getInstance();
         int hora = c.get(Calendar.HOUR_OF_DAY);
         int minuto = c.get(Calendar.MINUTE);
 
-        // Create a new instance of TimePickerDialog and return it
         return new TimePickerDialog(getActivity(), this, hora, minuto,
                 DateFormat.is24HourFormat(getActivity()));
     }

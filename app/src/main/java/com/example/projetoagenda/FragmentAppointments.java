@@ -26,12 +26,10 @@ public class FragmentAppointments extends Fragment {
         buttonToday = view.findViewById(R.id.buttonToday);
         buttonOtherDate = view.findViewById(R.id.buttonOtherDate);
 
-        // Aqui você pode adicionar funcionalidade aos botões, como definir os listeners
         buttonToday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Lógica para exibir compromissos do dia corrente
-                // ...
             }
         });
 

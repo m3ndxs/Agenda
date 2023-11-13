@@ -38,14 +38,25 @@
         android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_marginTop="20sp">
 
         <EditText
-            android:id="@+id/editTextDescription"
-            android:layout_width="match_parent"
+            android:id="@+id/textDescription"
+            android:layout_width="260sp"
             android:layout_height="wrap_content"
             android:hint="Descrição do compromisso"
-            android:inputType="text"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+        <Button
+            android:id="@+id/buttonSave"
+            android:layout_below="@+id/textDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="OK"
+            android:layout_marginLeft="15sp"
             android:textSize="20sp"
             android:textStyle="bold"/>
 

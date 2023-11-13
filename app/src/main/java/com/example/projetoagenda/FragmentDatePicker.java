@@ -20,13 +20,12 @@ public class FragmentDatePicker extends DialogFragment implements DatePickerDial
     private int selectedDay;
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // Use the current date as the default date in the picker
+
         final Calendar c = Calendar.getInstance();
         int ano = c.get(Calendar.YEAR);
         int mes = c.get(Calendar.MONTH);
         int dia = c.get(Calendar.DAY_OF_MONTH);
 
-        // Create a new instance of DatePickerDialog and return it
         return new DatePickerDialog(requireContext(), this, ano, mes, dia);
     }
 
