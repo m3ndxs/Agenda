@@ -15,7 +15,6 @@ public class FragmentDescription extends Fragment {
     private EditText editTextDescricao;
 
     public FragmentDescription() {
-        // Required empty public constructor
     }
 
     @Override
@@ -36,17 +35,16 @@ public class FragmentDescription extends Fragment {
         return view;
     }
 
-    private void salvarCompromisso() {
+    public void salvarCompromisso() {
         String descricao = editTextDescricao.getText().toString();
         if (!descricao.isEmpty()) {
-            Log.d("Descrição", "Compromisso Salvo: " + descricao);
+            Log.d("Descrição", "Compromisso: " + descricao);
         } else {
             Log.d("Descrição", "A descrição não pode ser vazia");
         }
     }
 
     public String getDescription() {
-
         return editTextDescricao.getText().toString();
     }
 }

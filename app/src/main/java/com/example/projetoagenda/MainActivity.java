@@ -30,20 +30,14 @@ public class MainActivity extends AppCompatActivity {
         fragmentAppointments = new FragmentAppointments();
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragmentContainerAppointments, fragmentAppointments )
+                    .add(android.R.id.content, fragmentAppointments)
                     .commit();
         }
 
-        getSupportFragmentManager().beginTransaction()
-                .replace(android.R.id.content, new FragmentDescription())
-                .commit();
-
-        // Obtem a descrição do CompromissoFragment e imprime no Log
-        obterDescricaoDoFragment();
-
+        fragmentAppointments.obterDescricaoDoFragment();
     }
 
-    private void obterDescricaoDoFragment() {
+    public void obterDescricaoDoFragment() {
         FragmentDescription compromissoFragment = (FragmentDescription) getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
 
         if (compromissoFragment != null) {
