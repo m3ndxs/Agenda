@@ -2,44 +2,50 @@ package com.example.projetoagenda;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.TimePickerDialog;
+import android.content.Context;
 import android.os.Bundle;
-
-import androidx.fragment.app.DialogFragment;
-
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.widget.DatePicker;
-import android.widget.TimePicker;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 
 import java.util.Calendar;
+import java.util.function.Consumer;
 
-public class FragmentDatePicker extends DialogFragment implements DatePickerDialog.OnDateSetListener{
-    private int selectedYear;
-    private int selectedMonth;
-    private int selectedDay;
+public class FragmentDatePicker extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+    private Consumer<String> dateSelectionHandler;
+    private Consumer<String> appointmentShowHandler;
+
+    public void setDateSelectionHandler(Consumer<String> handler) {
+        this.dateSelectionHandler = handler;
+    }
+
+    public void setAppointmentShowHandler(Consumer<String> handler) {
+        this.appointmentShowHandler = handler;
+    }
+
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-
         final Calendar c = Calendar.getInstance();
-        int ano = c.get(Calendar.YEAR);
-        int mes = c.get(Calendar.MONTH);
-        int dia = c.get(Calendar.DAY_OF_MONTH);
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
 
-        return new DatePickerDialog(requireContext(), this, ano, mes, dia);
+        return new DatePickerDialog(requireContext(), this, year, month, day);
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        selectedYear = year;
-        selectedMonth = month;
-        selectedDay = day;
+        String dateFormatted = String.valueOf(day) + "/" + String.valueOf(month + 1) + "/" + String.valueOf(year);
+        Log.d("FragmentDatePicker", "Data formatada: " + dateFormatted);
 
-        Log.d("DataHora", "Ano: " + String.valueOf(year));
-        Log.d("DataHora", "Mês: " + String.valueOf(month + 1));
-        Log.d("DataHora", "Dia: " + String.valueOf(day));
-    }
+        if (dateSelectionHandler != null) {
+            dateSelectionHandler.accept(dateFormatted);
+        }
 
-    public String getSelectedDate() {
-        return String.format("%02d/%02d/%04d", selectedDay, selectedMonth + 1, selectedYear);
+        if (appointmentShowHandler != null) {
+            appointmentShowHandler.accept(dateFormatted);
+        }
     }
 }

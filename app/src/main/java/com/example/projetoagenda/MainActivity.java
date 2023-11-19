@@ -1,80 +1,91 @@
 package com.example.projetoagenda;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.WindowDecorActionBar;
 import androidx.fragment.app.DialogFragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+
 public class MainActivity extends AppCompatActivity {
-    private FragmentDescription fragmentDescription;
+    private String dateSelection;
+    private String timeSelection;
+    private EditText textDescription;
+    private AppointmentDB appointmentDB;
+    private TextView textViewAppointments;
+
     private FragmentTimePicker fragmentTimePicker;
     private FragmentDatePicker fragmentDatePicker;
 
-    private FragmentAppointments fragmentAppointments;
+
+    void setDateSelection(String dateSelection) {
+        this.dateSelection = dateSelection;
+    }
+    void setTimeSelection(String timeSelection) {
+        this.timeSelection = timeSelection;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        fragmentDescription = new FragmentDescription();
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragmentContainer, fragmentDescription)
-                .commit();
+        instanceDB();
 
-        fragmentTimePicker = new FragmentTimePicker();
-        fragmentDatePicker = new FragmentDatePicker();
-
-        fragmentAppointments = new FragmentAppointments();
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(android.R.id.content, fragmentAppointments)
-                    .commit();
-        }
-
-        fragmentAppointments.obterDescricaoDoFragment();
-    }
-
-    public void obterDescricaoDoFragment() {
-        FragmentDescription compromissoFragment = (FragmentDescription) getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
-
-        if (compromissoFragment != null) {
-            String descricao = compromissoFragment.getDescription();
-            Log.d("MainActivity", "Descrição obtida da CompromissoFragment: " + descricao);
-        }
-    }
-
-    public String getDescriptionFromFragment() {
-        //Log.d("getDescriptionFromFragment", "Obtendo descrição do fragmento");
-        return fragmentDescription.getDescription();
+        textViewAppointments = findViewById(R.id.textViewAppointments);
+        textDescription = findViewById(R.id.textDescription);
+        Button buttonOK = findViewById(R.id.btnOk);
+        buttonOK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String description = textDescription.getText().toString();
+                Log.d("MainActivity", "Descrição capturada: " + description);
+                Log.d("MainActivity", "Data selecionada: " + dateSelection);
+                Log.d("MainActivity", "Hora selecionada: " + timeSelection);
+                createAppointment(dateSelection, timeSelection, description);
+            }
+        });
     }
 
     public void mostraDialogoTimePicker(View v) {
-        fragmentTimePicker.show(getSupportFragmentManager(), "timePicker");
+        DialogFragment newFragment = new FragmentTimePicker();
+        newFragment.show(getSupportFragmentManager(), "timePicker");
     }
 
     public void mostraDialogoDatePicker(View v) {
-        fragmentDatePicker.show(getSupportFragmentManager(), "datePicker");
+        FragmentDatePicker newFragment = new FragmentDatePicker();
+
+        newFragment.setDateSelectionHandler(date -> {
+            setDateSelection(date);
+        });
+
+        newFragment.show(getSupportFragmentManager(), "datePicker");
     }
 
-    public void onOkButtonPressed(View v) {
-        String descricao = getDescriptionFromFragment();
-        String data = getDataFromDatePicker();
-        String hora = getTimeFromTimePicker();
+    private void createAppointment(String date, String time, String description) {
+        instanceDB();
 
-        //Toast.makeText(this, "Descrição: " + descricao + "\nData: " + data + "\nHora: " + hora, Toast.LENGTH_LONG).show();
-        Log.d("Data", "Data: " + hora);
-        Log.d("Hora", "Hora: " + data);
-        Log.d("Descricao", "Descricao: " + descricao);
+        if(date != null && time != null) {
+            Appointment appointment = new Appointment(date, time, description);
+            appointmentDB.addAppointment(appointment);
+
+            Log.d("CreateAppointment", "Appointment created successfully:");
+            Log.d("CreateAppointment", "Date: " + date);
+            Log.d("CreateAppointment", "Time: " + time);
+            Log.d("CreateAppointment", "Description: " + description);
+        } else {
+            Log.e("CreateAppointment", "Appointment not created. Date or time is null.");
+        }
     }
 
-    private String getDataFromDatePicker() {
-        return fragmentDatePicker.getSelectedDate();
-    }
-
-    private String getTimeFromTimePicker() {
-        return fragmentTimePicker.getSelectedTime();
+    public void instanceDB() {
+        if (appointmentDB == null) {
+            appointmentDB = new AppointmentDB(this);
+        }
     }
 }

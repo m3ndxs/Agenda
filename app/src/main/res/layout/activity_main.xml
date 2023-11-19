@@ -43,22 +43,12 @@
 
         <EditText
             android:id="@+id/textDescription"
-            android:layout_width="260sp"
+            android:layout_width="400sp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:hint="Descrição do compromisso"
             android:textSize="20sp"
-            android:textStyle="bold"/>
-
-        <Button
-            android:id="@+id/buttonSave"
-            android:layout_below="@+id/textDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:text="OK"
-            android:layout_marginLeft="15sp"
-            android:textSize="20sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
     </LinearLayout>
     <LinearLayout
@@ -95,7 +85,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="20sp"
-        android:onClick="onOkButtonPressed"
         android:text="OK"
         android:textSize="20sp"
         android:textStyle="bold" />
@@ -136,16 +125,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="12sp"
                 android:text="Hoje"
-                android:layout_below="@id/scrollView"
                 android:textSize="20sp"
                 android:textStyle="bold"/>
 
             <Button
                 android:id="@+id/buttonOtherDate"
+                android:onClick="mostraDialogoDatePicker"
                 android:layout_width="150sp"
                 android:layout_height="wrap_content"
                 android:text="Outra Data"
-                android:layout_below="@id/scrollView"
                 android:layout_toEndOf="@id/buttonToday"
                 android:textSize="20sp"
                 android:textStyle="bold"/>
@@ -164,7 +152,7 @@
                 android:id="@+id/textViewAppointments"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=""
+                android:text="Sem compromissos"
                 android:inputType="textMultiLine"
                 android:textSize="18sp"
                 android:gravity="top"
