@@ -15,14 +15,9 @@ import java.util.function.Consumer;
 
 public class FragmentDatePicker extends DialogFragment implements DatePickerDialog.OnDateSetListener {
     private Consumer<String> dateSelectionHandler;
-    private Consumer<String> appointmentShowHandler;
 
     public void setDateSelectionHandler(Consumer<String> handler) {
         this.dateSelectionHandler = handler;
-    }
-
-    public void setAppointmentShowHandler(Consumer<String> handler) {
-        this.appointmentShowHandler = handler;
     }
 
     @NonNull
@@ -38,14 +33,9 @@ public class FragmentDatePicker extends DialogFragment implements DatePickerDial
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
         String dateFormatted = String.valueOf(day) + "/" + String.valueOf(month + 1) + "/" + String.valueOf(year);
-        Log.d("FragmentDatePicker", "Data formatada: " + dateFormatted);
 
         if (dateSelectionHandler != null) {
             dateSelectionHandler.accept(dateFormatted);
-        }
-
-        if (appointmentShowHandler != null) {
-            appointmentShowHandler.accept(dateFormatted);
         }
     }
 }

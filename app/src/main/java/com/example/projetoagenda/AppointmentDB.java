@@ -29,33 +29,29 @@ public class AppointmentDB {
         mDatabase.insert(AppointmentDBSchema.AppointmentTbl.NAME, null, values);
     }
 
-    public List<String> listAppointments(String clausulaWhere, String[] argsWhere) {
-        List<String> appointmentsList = new ArrayList<>();
-        Cursor cursor = queryAppointment(clausulaWhere, argsWhere);
+    String listAppointment(String clauseWhere, String[] argsWhere) {
+        Cursor cursor = queryAppointment(clauseWhere, argsWhere);
+        StringBuilder stringBuilder = new StringBuilder();
 
-        if (cursor != null) {
-            try {
-                int dateIndex = cursor.getColumnIndexOrThrow(AppointmentDBSchema.AppointmentTbl.Cols.DATE);
-                int timeIndex = cursor.getColumnIndexOrThrow(AppointmentDBSchema.AppointmentTbl.Cols.TIME);
-                int descriptionIndex = cursor.getColumnIndexOrThrow(AppointmentDBSchema.AppointmentTbl.Cols.DESCRIPTION);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                String date = cursor.getString(cursor.getColumnIndexOrThrow(AppointmentDBSchema.AppointmentTbl.Cols.DATE));
+                String time = cursor.getString(cursor.getColumnIndexOrThrow(AppointmentDBSchema.AppointmentTbl.Cols.TIME));
+                String description = cursor.getString(cursor.getColumnIndexOrThrow(AppointmentDBSchema.AppointmentTbl.Cols.DESCRIPTION));
 
-                while (cursor.moveToNext()) {
-                    String date = cursor.getString(dateIndex);
-                    String time = cursor.getString(timeIndex);
-                    String description = cursor.getString(descriptionIndex);
-
-                    if (time != null && description != null && !description.isEmpty()) {
-                        appointmentsList.add(date + " - " + time + " - " + description);
-                    }
+                if (time != null && !description.isEmpty()) {
+                    stringBuilder.append(date).append(" - ").append(time).append(" - ").append(description).append("\n");
                 }
-            } finally {
-                cursor.close();
-            }
+            } while (cursor.moveToNext());
+
+            cursor.close();
         }
 
-        return appointmentsList;
+        return stringBuilder.toString();
     }
-
+    public void deleteAppointments() {
+        mDatabase.delete(AppointmentDBSchema.AppointmentTbl.NAME, null, null);
+    }
 
     public Cursor queryAppointment(String clauseWhere, String[] argsWhere) {
         return mDatabase.query(
